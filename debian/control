@@ -3,7 +3,8 @@ Section: web
 Priority: optional
 Maintainer: Joachim Bauch <mail@joachim-bauch.de>
 Build-Depends:
- debhelper (>= 9~)
+ debhelper (>= 9~),
+ quilt
 Standards-Version: 3.9.5
 Homepage: https://github.com/lukas2511/letsencrypt.sh
 Vcs-Git: https://github.com/fancycode/debian-letsencrypt.sh.git

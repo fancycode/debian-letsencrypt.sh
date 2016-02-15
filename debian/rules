@@ -8,7 +8,7 @@ VER  ?= $(subst $(DTYPE),,$(UVER))
 #export DH_VERBOSE=1
 
 %:
-	dh $@ --parallel
+	dh $@ --with-quilt --parallel
 
 ## http://wiki.debian.org/onlyjob/get-orig-source
 .PHONY: get-orig-source
