@@ -1,3 +1,9 @@
+letsencrypt.sh (0.0+git20160215-2) unstable; urgency=medium
+
+  * Use libressl-openssl if available.
+
+ -- Joachim Bauch <mail@joachim-bauch.de>  Mon, 15 Feb 2016 23:06:03 +0100
+
 letsencrypt.sh (0.0+git20160215-1) unstable; urgency=low
 
   * Initial packaged release.
