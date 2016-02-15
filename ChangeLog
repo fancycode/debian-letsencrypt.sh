@@ -1,0 +1,1059 @@
+2016-02-12  Aral Balkan  <aral@aralbalkan.com>
+
+	* Updated Readme with rate limit warning + staging URL
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* do not fail on pass.
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed signcsr test
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed config location in test script
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* added more tests
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* check if hooks are chained before calling cleanup-hook on errors (fixes #126)
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed splitting of domain names in extract_altnames (fixes #127)
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* use more {} thingies around variables
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed some zsh quirks
+
+2016-02-10  Lukas Schauer  <lukas@schauer.so>
+
+	* changed the way SCRIPTDIR is searched for so it works better with symbolic links (e.g. a symbolic link in ~/.bin)
+
+2016-02-05  Lukas Schauer  <lukas@schauer.so>
+
+	* use "openssl dgst" instead of "openssl sha" (fixes #120)
+
+2016-02-05  Lukas Schauer  <lukas@schauer.so>
+
+	* check if privkey exists and is readable instead of checking if it's a regular file (fixes #122)
+
+2016-01-25  Gerard Dombroski  <github@everynothing.net>
+
+	* Add option to chain challenge hook arguments. Fixes #79.
+
+2016-02-03  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #118 from allixx/lockfile-config.sh.example
+
+2016-02-02  allixx  <piercemind@gmail.com>
+
+	* Added LOCKFILE to config.sh.example
+
+2016-02-01  Lukas Schauer  <lukas@schauer.so>
+
+	* added link to wiki page with example scripts for dns-01, fixes #117
+
+2016-01-26  Lukas Schauer  <lukas@schauer.so>
+
+	* don't try to delete DOMAINS_TXT on early failure when not yet set
+
+2016-01-26  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed curl check (fixes #112)
+
+2016-01-26  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #111 from weppos/patch-1
+
+2016-01-26  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #113 from hilbix/master
+
+2016-01-25  Valentin Hilbig  <webmaster@scylla-charybdis.com>
+
+	* pass IO descriptors to HOOK transparently
+
+2016-01-24  Simone Carletti  <weppos@weppos.net>
+
+	* The dns-01 support is now available in production
+
+2016-01-23  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #107 from jantore/hook-example
+
+2016-01-22  Jan Tore Morken  <jantore@32k.org>
+
+	* Add hook script example.
+
+2016-01-22  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #95 from nielslaukens/master
+
+2016-01-22  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #103 from nneul/fix-issue-102
+
+2016-01-22  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #99 from ymc/feature/add_conf.d_support
+
+2016-01-22  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #97 from ymc/feature/fix_syntax_highlighting
+
+2016-01-22  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #100 from davidearl/master
+
+2016-01-22  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #98 from ymc/fix/configuring_BASEDIR_does_not_affect_built_in_defaults
+
+2016-01-21  Nathan Neulinger  <nneul@neulinger.org>
+
+	* Retain full result when submitting challenge. Fixes #102
+
+2016-01-21  davidearl  <david@frankieandshadow.com>
+
+	* Add detail as to how dns-01 hook works
+
+2016-01-21  Daniel Beyer  <ymc-dabe@vcs.ymc.ch>
+
+	* Add conf.d support
+
+2016-01-21  Daniel Beyer  <ymc-dabe@vcs.ymc.ch>
+
+	* Respect configured BASEDIR for default values
+
+2016-01-21  Daniel Beyer  <ymc-dabe@vcs.ymc.ch>
+
+	* Fix possibly broken syntax highlighting
+
+2016-01-20  Niels Laukens  <niels@dest-unreach.be>
+
+	* Add --signcsr command
+
+2016-01-20  Niels Laukens  <niels@dest-unreach.be>
+
+	* Add extract_altnames() function
+
+2016-01-20  Niels Laukens  <niels@dest-unreach.be>
+
+	* Split off CSR signing to separate function
+
+2016-01-16  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #89 from germeier/master
+
+2016-01-16  Lukas Schauer  <lukas@schauer.so>
+
+	* added header with script-name and url to github repository
+
+2016-01-16  Lukas Schauer  <lukas@schauer.so>
+
+	* moved OSTYPE check and use built-in [[ for OSTYPE check
+
+2016-01-16  Lukas Schauer  <lukas@schauer.so>
+
+	* check exitcode of `curl -V` because of some issue with ancient versions of curl returning error codes on checking the version number
+
+2016-01-16  Lukas Schauer  <lukas@schauer.so>
+
+	* use different sed version for different system types (mostly for compatibility with ancient linux distros nobody should be using anyway ¯\_(ツ)_/¯)
+
+2016-01-16  Markus Germeier  <markus@germeier.com>
+
+	* add support for  Elliptic Curve Cryptography (ECC)
+
+2016-01-15  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #88 from f1rebird/master
+
+2016-01-15  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #82 from jantore/wellknown-http-only
+
+2016-01-15  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #85 from jaquer/fix-exit
+
+2016-01-15  Moritz Kick  <firebird@blackphoenix.de>
+
+	* I's are important
+
+2016-01-15  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #86 from petrkle/lock-dir-writable
+
+2016-01-15  Lukas Schauer  <lukas@schauer.so>
+
+	* check for sed with support for extended regular expressions
+
+2016-01-15  Petr  <petr@kle.cz>
+
+	* Fix typo
+
+2016-01-15  Petr  <petr@kle.cz>
+
+	* Check if directory for LOCKFILE is writable.
+
+2016-01-13  Arturo R  <github@private.jaquer.net>
+
+	* Added missing space before exit code.
+
+2016-01-10  Lukas Schauer  <lukas@schauer.so>
+
+	* use -z instead of `== ""`.. it's late.
+
+2016-01-10  Lukas Schauer  <lukas@schauer.so>
+
+	* show help if no arguments are provided
+
+2016-01-09  Jan Tore Morken  <jantore@32k.org>
+
+	* Require $WELLKNOWN only when using http-01.
+
+2016-01-09  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #81 from pascalj/remove-home-path
+
+2016-01-09  Pascal Jungblut  <mail@pascal-jungblut.com>
+
+	* Remove home path from config.sh.example
+
+2016-01-09  Lukas Schauer  <lukas@schauer.so>
+
+	* call mktemp with `-t XXXXXX` for compatibility with older BSD versions
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed whitespace-stripping, replace all whitespace in domains.txt entries with single space character (fixes #60 and #78)
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* cleanup for dns-01-challenge-support code
+
+2016-01-08  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* made link in readme clickable
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* moved import notice up in readme
+
+2016-01-08  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #77 from germeier/master
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* moved import scripts from repository to wiki and updated readme a bit
+
+2016-01-08  Markus Germeier  <markus@germeier.com>
+
+	* add support for dns-01 challenge - try 2
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* check for mktemp dependency
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed BASEDIR dependent default config values
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* re-set RENEW_DAYS to 30 (got accidentally reverted in one of the previous commits)
+
+2016-01-08  Markus Germeier  <markus@germeier.com>
+
+	* make hook a command line parameter
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* do not change exit code of loop in command_sign_domains
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* changed urlbase64 helper to also use sed for character replacements
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* use _exiterr helper in a few more places
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* added a few more comments
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* removed get_json_array helper, rearranged sign_domain method a bit, made grep for PEM-format-check quiet
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* return error on invalid request method in http_request, shortened http_request a bit
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* removed anti_newline helper
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* moved _openssl helper a bit up to be near the other helper methods
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* rewritten command_revoke method (shortened + changed output to look less like one of those weird openssl error messages)
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* updated readme
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed --domain syntax in test.sh
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* rewritten init_system method and parts of command_sign_domains (DOMAINS_TXT handling)
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* rewritten help method to get rid of `column` dependency
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* rewritten argument handling and moved to new main() method, added dependency checks, added _exiterr helper
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* rewritten hex2bin method
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* moved loading of configuration to seperate method
+
+2016-01-08  Lukas Schauer  <lukas@schauer.so>
+
+	* renamed _request method to http_request
+
+2016-01-06  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #71 from chrisb86/master
+
+2016-01-06  Christian Busch  <chris@debilux.org>
+
+	* Changed shebang of import-certs.sh to #!/usr/bin/env bash
+
+2016-01-05  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #68 from onovy/master
+
+2016-01-05  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #69 from olf/upstream
+
+2016-01-05  Olaf Peters  <olf@magicolf.de>
+
+	* fix typo in test.sh (ngrok not found)
+
+2016-01-02  Ondřej Nový  <ondrej.novy@firma.seznam.cz>
+
+	* Renew certificate 30 days before expiration
+
+2015-12-22  Lukas Schauer  <lukas@schauer.so>
+
+	* added license (fixes #63)
+
+2015-12-20  Lukas Schauer  <lukas@schauer.so>
+
+	* hide output of grep for pem-format-check
+
+2015-12-19  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #59 from erdgeist/master
+
+2015-12-19  Dirk Engling  <erdgeist@erdgeist.org>
+
+	* when using printf, we do not need inline expansion of variables
+
+2015-12-19  Lukas Schauer  <lukas@schauer.so>
+
+	* wat. removed some unnecessary code.
+
+2015-12-19  Lukas Schauer  <lukas@schauer.so>
+
+	* readme: mores infos about WELLKNOWN
+
+2015-12-19  Lukas Schauer  <lukas@schauer.so>
+
+	* shellcheck fixes
+
+2015-12-16  Markus Germeier  <markus@germeier.com>
+
+	* revoke: follow symlink, exit with error on non-existing certificate file
+
+2015-12-18  Dominik Heidler  <dominik@heidler.eu>
+
+	* add perl shebang
+
+2015-12-19  Lukas Schauer  <lukas@schauer.so>
+
+	* use temporary openssl config instead of weird fake fds (fixes #57)
+
+2015-12-19  Lukas Schauer  <lukas@schauer.so>
+
+	* also test SAN config
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* format CA certificate as PEM
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* never PASS with content in errorlog
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* check if renewal works
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* use different fake-ca for travis tests
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* Revert "tests are failing because of api limits, removed badge from readme"
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* tests are failing because of api limits, removed badge from readme
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* oops.. repaired test script
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* removed TODO mark from help text on renew of changed domains
+
+2015-12-17  Lukas Schauer  <lukas@schauer.so>
+
+	* additional tests and show log output if script execution fails
+
+2015-12-16  Markus Germeier  <markus@germeier.com>
+
+	* force a renew if given domain name(s) don't match the domain name(s) of the existing cert
+
+2015-12-16  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #54 from germeier/fixdomainparameter
+
+2015-12-16  Markus Germeier  <markus@germeier.com>
+
+	* fixed test.sh script
+
+2015-12-16  Markus Germeier  <markus@germeier.com>
+
+	* fix: --domain/-d is a parameter and not a command!
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* more verbose messages on certificate verification
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* test for force-resign
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* a bit more verbose on tests
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* rearranged and extended travis tests a bit
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* replace pcre-ism with posix class (thanks to @awaw, fixes #52)
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* do not create WELLKNOWN directory, output error message if directory is missing
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* switch to sign_domains command if domain parameter is given
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* changed default command to 'help'
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* do not return exit code 1 if domains.txt is empty, fixes #51
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* write error messages to stderr
+
+2015-12-16  Lukas Schauer  <lukas@schauer.so>
+
+	* handle whitespace in domains.txt a bit different to be compatible with bsd sed, hopefully fixes #45
+
+2015-12-15  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #49 from germeier/commands2
+
+2015-12-15  Markus Germeier  <markus@germeier.com>
+
+	* remove --sign in favor of two options "--force" and "--domain" (try 2)
+
+2015-12-14  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #44 from digint/bugfix_config_private_key
+
+2015-12-14  Axel Burri  <axel@tty0.ch>
+
+	* bugfix: PRIVATE_KEY is now configurable in config.sh, don't alter this variable after set_defaults()
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* updated readme
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed travis config? maybe. again.
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed travis config? maybe.
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* removed root certificates
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* travis: use fullchain to verify ssl certificate
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* grab root certificate url from certificate, fixes #43
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed usage of openssl sha in newer openssl versions by using direct binary output
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* use sha in openssl instead of shasum, fixes #42
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* use config vars from letsencrypt.sh in import-script
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* also output config location on --env
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* making shellcheck happy again
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* allow export of config variables for use in other scripts
+
+2015-12-14  Lukas Schauer  <lukas@schauer.so>
+
+	* changed order of config locations to be a bit more sane
+
+2015-12-14  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #40 from digint/no_scriptdir
+
+2015-12-12  Axel Burri  <axel@tty0.ch>
+
+	* make default PRIVATE_KEY and WELLKNOWN relative to BASEDIR, even if BASEDIR is overridden in config.sh; basic checks on BASEDIR
+
+2015-12-12  Axel Burri  <axel@tty0.ch>
+
+	* never fallback to SCRIPTDIR, this is error-prone and confusing
+
+2015-12-12  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #37 from germeier/privatekey
+
+2015-12-12  Markus Germeier  <markus@germeier.com>
+
+	* actually move BASEDIR up as intended
+
+2015-12-12  Markus Germeier  <markus@germeier.com>
+
+	* - make private key a config option - fix logic if private key is specified via command line option - start using PARAM_* for parameters provided at the command line
+
+2015-12-12  Lukas Schauer  <lukas@schauer.so>
+
+	* don't assume we are in the same directory as the script
+
+2015-12-12  Lukas Schauer  <lukas@schauer.so>
+
+	* fancy autogenerated help text
+
+2015-12-12  Lukas Schauer  <lukas@schauer.so>
+
+	* added commandline options (thanks to germeier, fixes #35)
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed travis config
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* added staging-ca certificate and added verification test to travis config
+
+2015-12-08  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #33 from M-M-M-M/clean_challenge
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* added travis-ci badge to readme
+
+2015-12-08  ET  <et@corde.org>
+
+	* Move cleaning challenge in order to clean when challenge is valid and when challenge is invalid.
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* added travis config
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* use lock file to prevent concurrent access
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* fix missing variable
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* check certificate to detect corruption
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed output of config location
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* grab action urls from ca-directory
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* removed line-break in example config
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* _request: fix unset variable
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* fix typo in error message
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* pass altname/domain as second argument to HOOK
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* display errors from openssl
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* import-certs.sh: simplify expiry check
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* ugly fix to syntax highlighting in Vim
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* README.md: letsencrypt.sh is written in bash
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* chmod +x import-account.pl
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* replace echo with printf
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* fix typo in comment
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* simplify expiry check
+
+2015-12-08  Simon Ruderich  <simon@ruderich.org>
+
+	* replace rm -f; ln -s with ln -sf
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* Check for config file in various locations
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* also add default CA definition in description of variable
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed default path to WELLKNOWN and moved SCRIPTDIR definition out of default-config block
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* cleaned up example config
+
+2015-12-08  et@corde.org  <et@corde.org>
+
+	* A single HOOK to handle challenge, cleaning of challenge files and uploading of certs.
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* certificate comes first in fullchain.pem, fixes #26
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* added shebang to example config
+
+2015-12-08  Lukas Schauer  <lukas@schauer.so>
+
+	* making shellcheck happy
+
+2015-12-08  et@corde.org  <et@corde.org>
+
+	* add CONTACT_EMAIL option on registration
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* added certificate revocation to feature-list
+
+2015-12-07  Markus Germeier  <markus@germeier.com>
+
+	* implement revoke
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* renamed import scripts, updated readme
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* update symlinks after signing the certificate
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* making shellcheck happy
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* umask in import script
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* added import script (allows import of existing certificates from the original letsencrypt client)
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* create fullchain.pem
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* also store csr with timestamp and symlink to default location
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* look for domains.txt under BASEDIR
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* updated readme
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* updated readme
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* delete challenge response after verification
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* parse challenges json differently to be compatible with bsd sed
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* added config option to set path for openssl config file (currently only used for generating a signing request)
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* use bash functionality instead of sed to filter SAN variable
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* don't use '-r' on sed
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* making shellcheck happy
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* use absolute path of script directory as default BASEDIR, remove trailing slash from BASEDIR
+
+2015-12-07  Lukas Schauer  <lukas@schauer.so>
+
+	* added default BASEDIR to example config
+
+2015-12-06  Andrey Jr. Melnikov  <temnota.am@gmail.com>
+
+	* Store keys and certs in $BASEDIR
+
+2015-12-06  Martin Geiseler  <hallo@tralafiti.de>
+
+	* Cleaner outputs
+
+2015-12-06  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #13 from germeier/master
+
+2015-12-06  Markus Germeier  <markus@germeier.com>
+
+	* change openssl to use enddate for expiry date check
+
+2015-12-06  Markus Germeier  <markus@germeier.com>
+
+	* show expire date when we don't need to renew a certifcate
+
+2015-12-06  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #12 from germeier/newkeys
+
+2015-12-06  Lukas Schauer  <lukas@schauer.so>
+
+	* trying to capture http status codes from curl instead of using "--fail" to be able to capture acme error messages
+
+2015-12-06  Markus Germeier  <markus@germeier.com>
+
+	* generate a new private key for each csr if the user wishes so
+
+2015-12-06  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #11 from germeier/fixpending
+
+2015-12-06  Markus Germeier  <markus@germeier.com>
+
+	* fixed logic to check status from our challenge
+
+2015-12-06  Lukas Schauer  <lukas@schauer.so>
+
+	* removed acme-challenges directory from git, create if needed
+
+2015-12-06  Lukas Schauer  <lukas@schauer.so>
+
+	* make config.sh optional
+
+2015-12-06  Lukas Schauer  <lukas@schauer.so>
+
+	* default location for acme-challenges
+
+2015-12-06  Martin Geiseler  <hallo@tralafiti.de>
+
+	* Renew timeframe as config option
+
+2015-12-06  Martin Geiseler  <hallo@tralafiti.de>
+
+	* Check expire date of existing certs
+
+2015-12-06  Markus Germeier  <markus@germeier.com>
+
+	* don't overwrite certificate files
+
+2015-12-06  Markus Germeier  <markus@germeier.com>
+
+	* make openssl keysize configurable
+
+2015-12-06  Lukas Schauer  <lukas@schauer.so>
+
+	* use "-s" to detect content in temporary curl error logfile
+
+2015-12-06  Benjamin Dos Santos  <benjamin.dossantos@gmail.com>
+
+	* style: double quote to prevent globbing and word splitting
+
+2015-12-06  Benjamin Dos Santos  <benjamin.dossantos@gmail.com>
+
+	* style: [[ ... ]] is preferred over [, test and /usr/bin/[.
+
+2015-12-06  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #7 from rudis/master
+
+2015-12-06  Simon Ruderich  <simon@ruderich.org>
+
+	* add HOOK_CHALLENGE option to run a command before the reponse
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* use mkdir -p to create certs/$domain/
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* make license agreement configurable as LICENSE
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* set CA setting per default
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* fix typo in error string
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* also remove tempfile for curl's stderr on error
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* rewrap line
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* simplify check for empty file
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* quote output filename
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* use "/usr/bin/env bash" instead of "/bin/bash"
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* big portability + readability fix: use openssl base64 instead of system base64, use shasum instead of shasum, added some comments
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed issue #4 (multiple domains per line)
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* removed perl dependency
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* fail in pipes too
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* fixed curl error message
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* trying to catch curl errors
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* make challenge files world-readable
+
+2015-12-05  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #1 from rudis/master
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* use umask 077 to protect private keys
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* use set -u to catch uninitialized variables
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* replace source with .
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* use [ -z .. ] instead of explicit compare with ""
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* use curl -sSf to display error messages on failure
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* replace echo (-n) with printf
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* remove useless cat
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* fix typo in variable name
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* don't use assign array to string ($@ -> $*)
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* add missing quotes
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* replace variable with %s in printf format string
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* add hex2bin helper function
+
+2015-12-05  Simon Ruderich  <simon@ruderich.org>
+
+	* fix pubMod64 and thumbprint calculation
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* check for errors on token retrieval
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* silent registration
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* not using bash arrays anymore
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* moved some code around to allow initial registration
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* generate private key if non-existant
+
+2015-12-05  Lukas Schauer  <lukas@schauer.so>
+
+	* initial commit
