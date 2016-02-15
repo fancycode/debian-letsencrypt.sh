@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+CONFIG_ROOT=/etc/letsencrypt.sh
+EXAMPLES_ROOT=/usr/share/doc/letsencrypt.sh
+
+if [ "$1" = "configure" ]; then
+	if [ ! -e "$CONFIG_ROOT/config.sh" ]; then
+		cp "$EXAMPLES_ROOT/config.sh.example" "$CONFIG_ROOT/config.sh"
+	fi
+fi
+
+#DEBHELPER#

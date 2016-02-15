@@ -1,0 +1,29 @@
+Source: letsencrypt.sh
+Section: web
+Priority: optional
+Maintainer: Joachim Bauch <mail@joachim-bauch.de>
+Build-Depends:
+ debhelper (>= 9~)
+Standards-Version: 3.9.5
+Homepage: https://github.com/lukas2511/letsencrypt.sh
+Vcs-Git: https://github.com/fancycode/debian-letsencrypt.sh.git
+Vcs-Browser: https://github.com/fancycode/debian-letsencrypt.sh
+
+Package: letsencrypt.sh
+Architecture: all
+Depends:
+ curl,
+ libressl-apps | openssl,
+ ${misc:Depends},
+Description: Commandline client for letsencrypt
+ This is a client for signing certificates with an ACME-server (currently only
+ provided by letsencrypt) implemented as a relatively simple bash-script.
+ .
+ It uses the openssl utility for everything related to actually handling keys
+ and certificates, so you need to have that installed.
+ .
+ Current features:
+  - Signing of a list of domains
+  - Signing of a CSR
+  - Renewal if a certificate is about to expire or SAN (subdomains) changed
+  - Certificate revocation

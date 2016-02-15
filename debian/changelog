@@ -1,0 +1,5 @@
+letsencrypt.sh (0.0+git20160215-1) unstable; urgency=low
+
+  * Initial packaged release.
+
+ -- Joachim Bauch <mail@joachim-bauch.de>  Mon, 15 Feb 2016 22:46:25 +0100
