@@ -1,3 +1,10 @@
+letsencrypt.sh (0.0+git20160216-1) unstable; urgency=low
+
+  * Imported Upstream version 0.0+git20160216
+  * Updated patch for new upstream version.
+
+ -- Joachim Bauch <mail@joachim-bauch.de>  Tue, 16 Feb 2016 16:06:57 +0100
+
 letsencrypt.sh (0.0+git20160215-2) unstable; urgency=medium
 
   * Use libressl-openssl if available.
