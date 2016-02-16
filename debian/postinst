@@ -3,7 +3,7 @@
 set -e
 
 CONFIG_ROOT=/etc/letsencrypt.sh
-EXAMPLES_ROOT=/usr/share/doc/letsencrypt.sh
+EXAMPLES_ROOT=/usr/share/doc/letsencrypt.sh/examples
 
 if [ "$1" = "configure" ]; then
 	if [ ! -e "$CONFIG_ROOT/config.sh" ]; then
