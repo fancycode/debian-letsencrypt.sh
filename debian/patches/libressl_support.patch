@@ -64,7 +64,7 @@
    res=$?
    set -e
    if [[ ${res} -ne 0 ]]; then
-@@ -285,7 +292,7 @@
+@@ -295,7 +302,7 @@
    protected64="$(printf '%s' "${protected}" | urlbase64)"
  
    # Sign header with nonce and our payload with our private key and encode signature as urlbase64
@@ -73,7 +73,7 @@
  
    # Send header + extended header + payload + signature to the acme-server
    data='{"header": '"${header}"', "protected": "'"${protected64}"'", "payload": "'"${payload64}"'", "signature": "'"${signed64}"'"}'
-@@ -298,11 +305,11 @@
+@@ -308,11 +315,11 @@
  extract_altnames() {
    csr="${1}" # the CSR itself (not a file)
  
@@ -87,7 +87,7 @@
    if <<<"${reqtext}" grep -q '^[[:space:]]*X509v3 Subject Alternative Name:[[:space:]]*$'; then
      # SANs used, extract these
      altnames="$( <<<"${reqtext}" grep -A1 '^[[:space:]]*X509v3 Subject Alternative Name:[[:space:]]*$' | tail -n1 )"
-@@ -378,7 +385,7 @@
+@@ -388,7 +395,7 @@
          ;;
        "dns-01")
          # Generate DNS entry content for dns-01 validation
@@ -96,7 +96,7 @@
          ;;
      esac
  
-@@ -446,8 +453,8 @@
+@@ -456,8 +463,8 @@
  
    # Finally request certificate from the acme-server and store it in cert-${timestamp}.pem and link from cert.pem
    echo " + Requesting certificate..."
@@ -107,7 +107,7 @@
    crt="$( printf -- '-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----\n' "${crt64}" )"
  
    # Try to load the certificate to detect corruption
-@@ -499,7 +506,7 @@
+@@ -509,7 +516,7 @@
    tmp_openssl_cnf="$(mktemp -t XXXXXX)"
    cat "${OPENSSL_CNF}" > "${tmp_openssl_cnf}"
    printf "[SAN]\nsubjectAltName=%s" "${SAN}" >> "${tmp_openssl_cnf}"
@@ -116,7 +116,7 @@
    rm -f "${tmp_openssl_cnf}"
  
    crt_path="${BASEDIR}/certs/${domain}/cert-${timestamp}.pem"
-@@ -508,9 +515,9 @@
+@@ -518,9 +525,9 @@
    # Create fullchain.pem
    echo " + Creating fullchain.pem..."
    cat "${crt_path}" > "${BASEDIR}/certs/${domain}/fullchain-${timestamp}.pem"
@@ -128,7 +128,7 @@
    fi
    cat "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem" >> "${BASEDIR}/certs/${domain}/fullchain-${timestamp}.pem"
  
-@@ -560,7 +567,7 @@
+@@ -570,7 +577,7 @@
      if [[ -e "${cert}" ]]; then
        printf " + Checking domain name(s) of existing cert..."
  
@@ -137,7 +137,7 @@
        givennames="$(echo "${domain}" "${morenames}"| tr ' ' '\n' | sort -u | tr '\n' ' ' | _sed 's/ $//' | _sed 's/^ //')"
  
        if [[ "${certnames}" = "${givennames}" ]]; then
-@@ -577,10 +584,10 @@
+@@ -587,10 +594,10 @@
  
      if [[ -e "${cert}" ]]; then
        echo " + Checking expire date of existing cert..."
@@ -150,7 +150,7 @@
          printf "(Longer than %d days). " "${RENEW_DAYS}"
          if [[ "${force_renew}" = "yes" ]]; then
            echo "Ignoring because renew was forced!"
-@@ -644,7 +651,7 @@
+@@ -654,7 +661,7 @@
  
    echo "Revoking ${cert}"
  
