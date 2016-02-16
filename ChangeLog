@@ -1,3 +1,27 @@
+2016-02-15  Lukas Schauer  <lukas@schauer.so>
+
+	* load config in cleanup command (fixes #137)
+
+2016-02-15  Lukas Schauer  <lukas@schauer.so>
+
+	* added test for cleanup command
+
+2016-02-15  Lukas Schauer  <lukas@schauer.so>
+
+	* updated readme
+
+2016-02-15  Lukas Schauer  <lukas@schauer.so>
+
+	* implemented cleanup command (moving unused files to archive directory)
+
+2016-02-15  Lukas Schauer  <lukas@schauer.so>
+
+	* exit with error message if curl has problems connecting (fixes #133)
+
+2016-02-15  Lukas Schauer  <lukas2511@users.noreply.github.com>
+
+	* Merge pull request #135 from aral/patch-1
+
 2016-02-12  Aral Balkan  <aral@aralbalkan.com>
 
 	* Updated Readme with rate limit warning + staging URL
