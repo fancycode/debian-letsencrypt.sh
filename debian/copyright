@@ -1,11 +1,11 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 
 Files: *
-Copyright: 2015 Lukas Schauer
+Copyright: 2015 Lukas Schauer <lukas.schauer@googlemail.com>
 License: MIT
 
 Files: debian/*
-Copyright: 2016 Joachim Bauch
+Copyright: 2016 Joachim Bauch <mail@joachim-bauch.de>
 License: MIT
 
 License: MIT
