@@ -10,6 +10,9 @@ VER  ?= $(subst $(DTYPE),,$(UVER))
 %:
 	dh $@ --with-quilt --parallel
 
+override_dh_installchangelogs:
+	dh_installchangelogs ChangeLog
+
 ## http://wiki.debian.org/onlyjob/get-orig-source
 .PHONY: get-orig-source
 get-orig-source: $(PKG)_$(VER)$(DTYPE).orig.tar.xz $(info I: $(PKG)_$(VER)$(DTYPE))
