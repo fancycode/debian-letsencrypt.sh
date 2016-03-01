@@ -1,3 +1,9 @@
+letsencrypt.sh (0.0+git20160216-3) unstable; urgency=low
+
+  * Also depend on ca-certificates to make curl work with letsencrypt.org.
+
+ -- Joachim Bauch <bauch@struktur.de>  Tue, 01 Mar 2016 10:08:47 +0100
+
 letsencrypt.sh (0.0+git20160216-2) unstable; urgency=low
 
   * Install example files using "dh_installexamples".
