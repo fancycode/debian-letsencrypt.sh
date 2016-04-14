@@ -1,6 +1,6 @@
 --- a/letsencrypt.sh
 +++ b/letsencrypt.sh
-@@ -23,10 +23,17 @@
+@@ -20,10 +20,17 @@
  
  BASEDIR="${SCRIPTDIR}"
  
@@ -17,9 +17,9 @@
 -  openssl version > /dev/null 2>&1 || _exiterr "This script requires an openssl binary."
 +  ${OPENSSL} version > /dev/null 2>&1 || _exiterr "This script requires an openssl binary."
    _sed "" < /dev/null > /dev/null 2>&1 || _exiterr "This script requires sed with support for extended (modern) regular expressions."
-   grep -V > /dev/null 2>&1 || _exiterr "This script requires grep."
+   command -v grep > /dev/null 2>&1 || _exiterr "This script requires grep."
    mktemp -u -t XXXXXX > /dev/null 2>&1 || _exiterr "This script requires mktemp."
-@@ -67,7 +74,7 @@
+@@ -65,7 +72,7 @@
    WELLKNOWN=
    PRIVATE_KEY_RENEW="no"
    KEY_ALGO=rsa
@@ -36,9 +36,9 @@
 +  ${OPENSSL} rsa -in "${PRIVATE_KEY}" -check 2>/dev/null > /dev/null || _exiterr "Private key is not valid, can not continue."
  
    # Get public components from private key and calculate thumbprint
--  pubExponent64="$(openssl rsa -in "${PRIVATE_KEY}" -noout -text | grep publicExponent | grep -oE "0x[a-f0-9]+" | cut -d'x' -f2 | hex2bin | urlbase64)"
+-  pubExponent64="$(printf '%x' "$(openssl rsa -in "${PRIVATE_KEY}" -noout -text | awk '/publicExponent/ {print $2}')" | hex2bin | urlbase64)"
 -  pubMod64="$(openssl rsa -in "${PRIVATE_KEY}" -noout -modulus | cut -d'=' -f2 | hex2bin | urlbase64)"
-+  pubExponent64="$(${OPENSSL} rsa -in "${PRIVATE_KEY}" -noout -text | grep publicExponent | grep -oE "0x[a-f0-9]+" | cut -d'x' -f2 | hex2bin | urlbase64)"
++  pubExponent64="$(printf '%x' "$(${OPENSSL} rsa -in "${PRIVATE_KEY}" -noout -text | awk '/publicExponent/ {print $2}')" | hex2bin | urlbase64)"
 +  pubMod64="$(${OPENSSL} rsa -in "${PRIVATE_KEY}" -noout -modulus | cut -d'=' -f2 | hex2bin | urlbase64)"
  
 -  thumbprint="$(printf '{"e":"%s","kty":"RSA","n":"%s"}' "${pubExponent64}" "${pubMod64}" | openssl dgst -sha256 -binary | urlbase64)"
@@ -55,7 +55,7 @@
  }
  
  # Convert hex string to binary data
-@@ -221,7 +228,7 @@
+@@ -223,7 +230,7 @@
  # display the output if the exit code was != 0 to simplify debugging.
  _openssl() {
    set +e
@@ -64,7 +64,7 @@
    res=$?
    set -e
    if [[ ${res} -ne 0 ]]; then
-@@ -295,7 +302,7 @@
+@@ -297,7 +304,7 @@
    protected64="$(printf '%s' "${protected}" | urlbase64)"
  
    # Sign header with nonce and our payload with our private key and encode signature as urlbase64
@@ -73,7 +73,7 @@
  
    # Send header + extended header + payload + signature to the acme-server
    data='{"header": '"${header}"', "protected": "'"${protected64}"'", "payload": "'"${payload64}"'", "signature": "'"${signed64}"'"}'
-@@ -308,11 +315,11 @@
+@@ -310,11 +317,11 @@
  extract_altnames() {
    csr="${1}" # the CSR itself (not a file)
  
@@ -87,7 +87,7 @@
    if <<<"${reqtext}" grep -q '^[[:space:]]*X509v3 Subject Alternative Name:[[:space:]]*$'; then
      # SANs used, extract these
      altnames="$( <<<"${reqtext}" grep -A1 '^[[:space:]]*X509v3 Subject Alternative Name:[[:space:]]*$' | tail -n1 )"
-@@ -388,7 +395,7 @@
+@@ -391,7 +398,7 @@
          ;;
        "dns-01")
          # Generate DNS entry content for dns-01 validation
@@ -96,7 +96,7 @@
          ;;
      esac
  
-@@ -456,8 +463,8 @@
+@@ -463,8 +470,8 @@
  
    # Finally request certificate from the acme-server and store it in cert-${timestamp}.pem and link from cert.pem
    echo " + Requesting certificate..."
@@ -107,7 +107,7 @@
    crt="$( printf -- '-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----\n' "${crt64}" )"
  
    # Try to load the certificate to detect corruption
-@@ -509,7 +516,7 @@
+@@ -516,7 +523,7 @@
    tmp_openssl_cnf="$(mktemp -t XXXXXX)"
    cat "${OPENSSL_CNF}" > "${tmp_openssl_cnf}"
    printf "[SAN]\nsubjectAltName=%s" "${SAN}" >> "${tmp_openssl_cnf}"
@@ -116,7 +116,7 @@
    rm -f "${tmp_openssl_cnf}"
  
    crt_path="${BASEDIR}/certs/${domain}/cert-${timestamp}.pem"
-@@ -518,9 +525,9 @@
+@@ -526,9 +533,9 @@
    # Create fullchain.pem
    echo " + Creating fullchain.pem..."
    cat "${crt_path}" > "${BASEDIR}/certs/${domain}/fullchain-${timestamp}.pem"
@@ -128,7 +128,7 @@
    fi
    cat "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem" >> "${BASEDIR}/certs/${domain}/fullchain-${timestamp}.pem"
  
-@@ -570,7 +577,7 @@
+@@ -581,7 +588,7 @@
      if [[ -e "${cert}" ]]; then
        printf " + Checking domain name(s) of existing cert..."
  
@@ -137,7 +137,7 @@
        givennames="$(echo "${domain}" "${morenames}"| tr ' ' '\n' | sort -u | tr '\n' ' ' | _sed 's/ $//' | _sed 's/^ //')"
  
        if [[ "${certnames}" = "${givennames}" ]]; then
-@@ -587,10 +594,10 @@
+@@ -598,10 +605,10 @@
  
      if [[ -e "${cert}" ]]; then
        echo " + Checking expire date of existing cert..."
@@ -150,7 +150,7 @@
          printf "(Longer than %d days). " "${RENEW_DAYS}"
          if [[ "${force_renew}" = "yes" ]]; then
            echo "Ignoring because renew was forced!"
-@@ -654,7 +661,7 @@
+@@ -667,7 +674,7 @@
  
    echo "Revoking ${cert}"
  
