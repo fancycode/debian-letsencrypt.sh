@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Fail early
 set -eu -o pipefail
@@ -153,7 +153,7 @@ _TEST "Run in cron mode again, this time with domain in domains.txt, should find
 echo "${TMP_URL} ${TMP2_URL} ${TMP3_URL}" >> domains.txt
 ./letsencrypt.sh --cron > tmplog 2> errorlog || _FAIL "Script execution failed"
 _CHECK_LOG "Checking domain name(s) of existing cert... unchanged."
-_CHECK_LOG "Skipping!"
+_CHECK_LOG "Skipping renew"
 _CHECK_ERRORLOG
 
 # Run in cron mode one last time, with domain in domains.txt and force-resign (should find certificate, resign anyway, and not generate private key)
@@ -207,6 +207,14 @@ REAL_CERT="$(readlink -n "certs/${TMP_URL}/cert.pem")"
 _CHECK_LOG "Revoking certs/${TMP_URL}/${REAL_CERT}"
 _CHECK_LOG "Done."
 _CHECK_FILE "certs/${TMP_URL}/${REAL_CERT}-revoked"
+_CHECK_ERRORLOG
+
+# Test cleanup command
+_TEST "Cleaning up certificates"
+./letsencrypt.sh --cleanup > tmplog 2> errorlog || _FAIL "Script execution failed"
+_CHECK_LOG "Moving unused file to archive directory: ${TMP_URL}/cert-"
+_CHECK_LOG "Moving unused file to archive directory: ${TMP_URL}/chain-"
+_CHECK_LOG "Moving unused file to archive directory: ${TMP_URL}/fullchain-"
 _CHECK_ERRORLOG
 
 # All done

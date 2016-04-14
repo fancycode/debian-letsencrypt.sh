@@ -1,5 +1,7 @@
 # letsencrypt.sh [![Build Status](https://travis-ci.org/lukas2511/letsencrypt.sh.svg?branch=master)](https://travis-ci.org/lukas2511/letsencrypt.sh)
 
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EL9BQ5FQGG73Y)
+
 This is a client for signing certificates with an ACME-server (currently only provided by letsencrypt) implemented as a relatively simple bash-script.
 
 It uses the `openssl` utility for everything related to actually handling keys and certificates, so you need to have that installed.
@@ -30,6 +32,7 @@ Commands:
  --cron (-c)                      Sign/renew non-existant/changed/expiring certificates.
  --signcsr (-s) path/to/csr.pem   Sign a given CSR, output CRT on stdout (advanced usage)
  --revoke (-r) path/to/cert.pem   Revoke specified certificate
+ --cleanup (-gc)                  Move unused certificate files to archive directory
  --help (-h)                      Show help text
  --env (-e)                       Output configuration variables for use in other scripts
 
@@ -40,6 +43,7 @@ Parameters:
  --config (-f) path/to/config.sh  Use specified config file
  --hook (-k) path/to/hook.sh      Use specified script for hooks
  --challenge (-t) http-01|dns-01  Which challenge should be used? Currently http-01 and dns-01 are supported
+ --algo (-a) rsa|prime256v1|secp384r1 Which public key algorithm should be used? Supported: rsa, prime256v1 and secp384r1
 ```
 
 ### domains.txt
@@ -58,7 +62,7 @@ with the other domains in the corresponding line being their alternative names.
 
 Boulder (acme-server) is looking for challenge responses under your domain in the `.well-known/acme-challenge` directory
 
-This script uses `http-01`-type verification (for now) so you need to have that directory available over normal http (no ssl).
+This script uses `http-01`-type verification (for now) so you need to have that directory available over normal http (redirect to https will be acceptable).
 
 A full URL would look like `http://example.org/.well-known/acme-challenge/c3VjaC1jaGFsbGVuZ2UtbXVjaA-aW52YWxpZC13b3c`.
 
@@ -100,6 +104,11 @@ You need a hook script that deploys the challenge to your DNS server!
 The hook script (indicated in the config.sh file or the --hook/-k command line argument) gets four arguments: an operation name (clean_challenge, deploy_challenge, or deploy_cert) and some operands for that. For deploy_challenge $2 is the domain name for which the certificate is required, $3 is a "challenge token" (which is not needed for dns-01), and $4 is a token which needs to be inserted in a TXT record for the domain.
 
 Typically, you will need to split the subdomain name in two, the subdomain name and the domain name separately. For example, for "my.example.com", you'll need "my" and "example.com" separately. You then have to prefix "_acme-challenge." before the subdomain name, as in "_acme-challenge.my" and set a TXT record for that on the domain (e.g. "example.com") which has the value supplied in $4
+
+```
+_acme-challenge    IN    TXT    $4
+_acme-challenge.my IN    TXT    $4
+```
 
 That could be done manually (as most providers don't have a DNS API), by having your hook script echo $1, $2 and $4 and then wait (read -s -r -e < /dev/tty) - give it a little time to get into their DNS system. Usually providers give you a boxes to put "_acme-challenge.my" and the token value in, and a dropdown to choose the record type, TXT. 
 
