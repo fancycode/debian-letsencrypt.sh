@@ -1,4 +1,3 @@
-config.sh.example
-domains.txt.example
-hook.sh.example
-
+docs/examples/config.sh.example
+docs/examples/domains.txt.example
+docs/examples/hook.sh.example
