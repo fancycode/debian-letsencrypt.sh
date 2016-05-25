@@ -1,3 +1,14 @@
+letsencrypt.sh (0.2.0-1) unstable; urgency=low
+
+  * Added watch file to check for new versions.
+  * Imported Upstream version 0.2.0
+  * Fixed wrong merge contents.
+  * Updated libressl patch for new upstream version.
+  * Updated for new location of examples.
+  * Updated for new documentation files.
+
+ -- Joachim Bauch <bauch@struktur.de>  Wed, 25 May 2016 10:56:25 +0200
+
 letsencrypt.sh (0.1.0-1) unstable; urgency=medium
 
   * Imported Upstream version 0.1.0
