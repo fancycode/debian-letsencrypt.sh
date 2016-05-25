@@ -2,6 +2,8 @@
 
 # letsencrypt.sh by lukas2511
 # Source: https://github.com/lukas2511/letsencrypt.sh
+#
+# This script is licensed under The MIT License (see LICENSE for more information).
 
 set -e
 set -u
@@ -20,13 +22,19 @@ SCRIPTDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 BASEDIR="${SCRIPTDIR}"
 
+# Create (identifiable) temporary files
+_mktemp() {
+  # shellcheck disable=SC2068
+  mktemp ${@:-} "${TMPDIR:-/tmp}/letsencrypt.sh-XXXXXX"
+}
+
 # Check for script dependencies
 check_dependencies() {
   # just execute some dummy and/or version commands to see if required tools exist and are actually usable
   openssl version > /dev/null 2>&1 || _exiterr "This script requires an openssl binary."
   _sed "" < /dev/null > /dev/null 2>&1 || _exiterr "This script requires sed with support for extended (modern) regular expressions."
   command -v grep > /dev/null 2>&1 || _exiterr "This script requires grep."
-  mktemp -u -t XXXXXX > /dev/null 2>&1 || _exiterr "This script requires mktemp."
+  _mktemp -u > /dev/null 2>&1 || _exiterr "This script requires mktemp."
 
   # curl returns with an error code in some ancient versions so we have to catch that
   set +e
@@ -59,11 +67,11 @@ load_config() {
   HOOK=
   HOOK_CHAIN="no"
   RENEW_DAYS="30"
-  PRIVATE_KEY=
-  PRIVATE_KEY_JSON=
+  ACCOUNT_KEY=
+  ACCOUNT_KEY_JSON=
   KEYSIZE="4096"
   WELLKNOWN=
-  PRIVATE_KEY_RENEW="no"
+  PRIVATE_KEY_RENEW="yes"
   KEY_ALGO=rsa
   OPENSSL_CNF="$(openssl version -d | cut -d\" -f2)/openssl.cnf"
   CONTACT_EMAIL=
@@ -107,8 +115,8 @@ load_config() {
   # Check BASEDIR and set default variables
   [[ -d "${BASEDIR}" ]] || _exiterr "BASEDIR does not exist: ${BASEDIR}"
 
-  [[ -z "${PRIVATE_KEY}" ]] && PRIVATE_KEY="${BASEDIR}/private_key.pem"
-  [[ -z "${PRIVATE_KEY_JSON}" ]] && PRIVATE_KEY_JSON="${BASEDIR}/private_key.json"
+  [[ -z "${ACCOUNT_KEY}" ]] && ACCOUNT_KEY="${BASEDIR}/private_key.pem"
+  [[ -z "${ACCOUNT_KEY_JSON}" ]] && ACCOUNT_KEY_JSON="${BASEDIR}/private_key.json"
   [[ -z "${WELLKNOWN}" ]] && WELLKNOWN="${BASEDIR}/.acme-challenges"
   [[ -z "${LOCKFILE}" ]] && LOCKFILE="${BASEDIR}/lock"
 
@@ -148,23 +156,24 @@ init_system() {
 
   # Checking for private key ...
   register_new_key="no"
-  if [[ -n "${PARAM_PRIVATE_KEY:-}" ]]; then
+  if [[ -n "${PARAM_ACCOUNT_KEY:-}" ]]; then
     # a private key was specified from the command line so use it for this run
-    echo "Using private key ${PARAM_PRIVATE_KEY} instead of account key"
-    PRIVATE_KEY="${PARAM_PRIVATE_KEY}"
+    echo "Using private key ${PARAM_ACCOUNT_KEY} instead of account key"
+    ACCOUNT_KEY="${PARAM_ACCOUNT_KEY}"
+    ACCOUNT_KEY_JSON="${PARAM_ACCOUNT_KEY}.json"
   else
     # Check if private account key exists, if it doesn't exist yet generate a new one (rsa key)
-    if [[ ! -e "${PRIVATE_KEY}" ]]; then
+    if [[ ! -e "${ACCOUNT_KEY}" ]]; then
       echo "+ Generating account key..."
-      _openssl genrsa -out "${PRIVATE_KEY}" "${KEYSIZE}"
+      _openssl genrsa -out "${ACCOUNT_KEY}" "${KEYSIZE}"
       register_new_key="yes"
     fi
   fi
-  openssl rsa -in "${PRIVATE_KEY}" -check 2>/dev/null > /dev/null || _exiterr "Private key is not valid, can not continue."
+  openssl rsa -in "${ACCOUNT_KEY}" -check 2>/dev/null > /dev/null || _exiterr "Account key is not valid, can not continue."
 
   # Get public components from private key and calculate thumbprint
-  pubExponent64="$(printf '%x' "$(openssl rsa -in "${PRIVATE_KEY}" -noout -text | awk '/publicExponent/ {print $2}')" | hex2bin | urlbase64)"
-  pubMod64="$(openssl rsa -in "${PRIVATE_KEY}" -noout -modulus | cut -d'=' -f2 | hex2bin | urlbase64)"
+  pubExponent64="$(printf '%x' "$(openssl rsa -in "${ACCOUNT_KEY}" -noout -text | awk '/publicExponent/ {print $2}')" | hex2bin | urlbase64)"
+  pubMod64="$(openssl rsa -in "${ACCOUNT_KEY}" -noout -modulus | cut -d'=' -f2 | hex2bin | urlbase64)"
 
   thumbprint="$(printf '{"e":"%s","kty":"RSA","n":"%s"}' "${pubExponent64}" "${pubMod64}" | openssl dgst -sha256 -binary | urlbase64)"
 
@@ -174,9 +183,9 @@ init_system() {
     [[ ! -z "${CA_NEW_REG}" ]] || _exiterr "Certificate authority doesn't allow registrations."
     # If an email for the contact has been provided then adding it to the registration request
     if [[ -n "${CONTACT_EMAIL}" ]]; then
-      signed_request "${CA_NEW_REG}" '{"resource": "new-reg", "contact":["mailto:'"${CONTACT_EMAIL}"'"], "agreement": "'"$LICENSE"'"}' > "${PRIVATE_KEY_JSON}"
+      signed_request "${CA_NEW_REG}" '{"resource": "new-reg", "contact":["mailto:'"${CONTACT_EMAIL}"'"], "agreement": "'"$LICENSE"'"}' > "${ACCOUNT_KEY_JSON}"
     else
-      signed_request "${CA_NEW_REG}" '{"resource": "new-reg", "agreement": "'"$LICENSE"'"}' > "${PRIVATE_KEY_JSON}"
+      signed_request "${CA_NEW_REG}" '{"resource": "new-reg", "agreement": "'"$LICENSE"'"}' > "${ACCOUNT_KEY_JSON}"
     fi
   fi
 
@@ -198,6 +207,11 @@ _sed() {
 _exiterr() {
   echo "ERROR: ${1}" >&2
   exit 1
+}
+
+# Remove newlines and whitespace from json
+clean_json() {
+  tr -d '\r\n' | _sed -e 's/ +/ /g' -e 's/\{ /{/g' -e 's/ \}/}/g' -e 's/\[ /[/g' -e 's/ \]/]/g'
 }
 
 # Encode data as url-safe formatted base64
@@ -238,7 +252,7 @@ _openssl() {
 
 # Send http(s) request with specified method
 http_request() {
-  tempcont="$(mktemp -t XXXXXX)"
+  tempcont="$(_mktemp)"
 
   set +e
   if [[ "${1}" = "head" ]]; then
@@ -297,7 +311,7 @@ signed_request() {
   protected64="$(printf '%s' "${protected}" | urlbase64)"
 
   # Sign header with nonce and our payload with our private key and encode signature as urlbase64
-  signed64="$(printf '%s' "${protected64}.${payload64}" | openssl dgst -sha256 -sign "${PRIVATE_KEY}" | urlbase64)"
+  signed64="$(printf '%s' "${protected64}.${payload64}" | openssl dgst -sha256 -sign "${ACCOUNT_KEY}" | urlbase64)"
 
   # Send header + extended header + payload + signature to the acme-server
   data='{"header": '"${header}"', "protected": "'"${protected64}"'", "payload": "'"${payload64}"'", "signature": "'"${signed64}"'"}'
@@ -367,7 +381,7 @@ sign_csr() {
   for altname in ${altnames}; do
     # Ask the acme-server for new challenge token and extract them from the resulting json block
     echo " + Requesting challenge for ${altname}..."
-    response="$(signed_request "${CA_NEW_AUTHZ}" '{"resource": "new-authz", "identifier": {"type": "dns", "value": "'"${altname}"'"}}')"
+    response="$(signed_request "${CA_NEW_AUTHZ}" '{"resource": "new-authz", "identifier": {"type": "dns", "value": "'"${altname}"'"}}' | clean_json)"
 
     challenges="$(printf '%s\n' "${response}" | sed -n 's/.*\("challenges":[^\[]*\[[^]]*]\).*/\1/p')"
     repl=$'\n''{' # fix syntax highlighting in Vim
@@ -419,7 +433,7 @@ sign_csr() {
 
     # Ask the acme-server to verify our challenge and wait until it is no longer pending
     echo " + Responding to challenge for ${altname}..."
-    result="$(signed_request "${challenge_uris[${idx}]}" '{"resource": "challenge", "keyAuthorization": "'"${keyauth}"'"}')"
+    result="$(signed_request "${challenge_uris[${idx}]}" '{"resource": "challenge", "keyAuthorization": "'"${keyauth}"'"}' | clean_json)"
 
     reqstatus="$(printf '%s\n' "${result}" | get_json_string_value status)"
 
@@ -513,7 +527,7 @@ sign_domain() {
   done
   SAN="${SAN%%, }"
   local tmp_openssl_cnf
-  tmp_openssl_cnf="$(mktemp -t XXXXXX)"
+  tmp_openssl_cnf="$(_mktemp)"
   cat "${OPENSSL_CNF}" > "${tmp_openssl_cnf}"
   printf "[SAN]\nsubjectAltName=%s" "${SAN}" >> "${tmp_openssl_cnf}"
   openssl req -new -sha256 -key "${BASEDIR}/certs/${domain}/${privkey}" -out "${BASEDIR}/certs/${domain}/cert-${timestamp}.csr" -subj "/CN=${domain}/" -reqexts SAN -config "${tmp_openssl_cnf}"
@@ -541,7 +555,8 @@ sign_domain() {
   ln -sf "cert-${timestamp}.pem" "${BASEDIR}/certs/${domain}/cert.pem"
 
   # Wait for hook script to clean the challenge and to deploy cert if used
-  [[ -n "${HOOK}" ]] && "${HOOK}" "deploy_cert" "${domain}" "${BASEDIR}/certs/${domain}/privkey.pem" "${BASEDIR}/certs/${domain}/cert.pem" "${BASEDIR}/certs/${domain}/fullchain.pem" "${BASEDIR}/certs/${domain}/chain.pem"
+  export KEY_ALGO
+  [[ -n "${HOOK}" ]] && "${HOOK}" "deploy_cert" "${domain}" "${BASEDIR}/certs/${domain}/privkey.pem" "${BASEDIR}/certs/${domain}/cert.pem" "${BASEDIR}/certs/${domain}/fullchain.pem" "${BASEDIR}/certs/${domain}/chain.pem" "${timestamp}"
 
   unset challenge_token
   echo " + Done!"
@@ -553,7 +568,7 @@ command_sign_domains() {
   init_system
 
   if [[ -n "${PARAM_DOMAIN:-}" ]]; then
-    DOMAINS_TXT="$(mktemp -t XXXXXX)"
+    DOMAINS_TXT="$(_mktemp)"
     printf -- "${PARAM_DOMAIN}" > "${DOMAINS_TXT}"
   elif [[ -e "${BASEDIR}/domains.txt" ]]; then
     DOMAINS_TXT="${BASEDIR}/domains.txt"
@@ -564,7 +579,7 @@ command_sign_domains() {
   # Generate certificates for all domains found in domains.txt. Check if existing certificate are about to expire
   ORIGIFS="${IFS}"
   IFS=$'\n'
-  for line in $(<"${DOMAINS_TXT}" tr -d '\r' | _sed -e 's/^[[:space:]]*//g' -e 's/[[:space:]]*$//g' -e 's/[[:space:]]+/ /g' | (grep -vE '^(#|$)' || true)); do
+  for line in $(<"${DOMAINS_TXT}" tr -d '\r' | tr '[:upper:]' '[:lower:]' | _sed -e 's/^[[:space:]]*//g' -e 's/[[:space:]]*$//g' -e 's/[[:space:]]+/ /g' | (grep -vE '^(#|$)' || true)); do
     IFS="${ORIGIFS}"
     domain="$(printf '%s\n' "${line}" | cut -d' ' -f1)"
     morenames="$(printf '%s\n' "${line}" | cut -s -d' ' -f2-)"
@@ -668,7 +683,7 @@ command_revoke() {
   echo "Revoking ${cert}"
 
   cert64="$(openssl x509 -in "${cert}" -inform PEM -outform DER | urlbase64)"
-  response="$(signed_request "${CA_REVOKE_CERT}" '{"resource": "revoke-cert", "certificate": "'"${cert64}"'"}')"
+  response="$(signed_request "${CA_REVOKE_CERT}" '{"resource": "revoke-cert", "certificate": "'"${cert64}"'"}' | clean_json)"
   # if there is a problem with our revoke request _request (via signed_request) will report this and "exit 1" out
   # so if we are here, it is safe to assume the request was successful
   echo " + Done."
@@ -756,7 +771,7 @@ command_help() {
 command_env() {
   echo "# letsencrypt.sh configuration"
   load_config
-  typeset -p CA LICENSE CHALLENGETYPE HOOK HOOK_CHAIN RENEW_DAYS PRIVATE_KEY KEYSIZE WELLKNOWN PRIVATE_KEY_RENEW OPENSSL_CNF CONTACT_EMAIL LOCKFILE
+  typeset -p CA LICENSE CHALLENGETYPE HOOK HOOK_CHAIN RENEW_DAYS ACCOUNT_KEY ACCOUNT_KEY_JSON KEYSIZE WELLKNOWN PRIVATE_KEY_RENEW OPENSSL_CNF CONTACT_EMAIL LOCKFILE
 }
 
 # Main method (parses script arguments and calls command_* methods)
@@ -837,7 +852,7 @@ main() {
       --privkey|-p)
         shift 1
         check_parameters "${1:-}"
-        PARAM_PRIVATE_KEY="${1}"
+        PARAM_ACCOUNT_KEY="${1}"
         ;;
 
       # PARAM_Usage: --config (-f) path/to/config.sh
