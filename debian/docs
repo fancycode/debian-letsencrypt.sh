@@ -1,1 +1,12 @@
+CHANGELOG
 README.md
+LICENSE
+docs/dns-verification.md
+docs/domains_txt.md
+docs/ecc.md
+docs/examples
+docs/hook_chain.md
+docs/import-from-official-client.md
+docs/staging.md
+docs/troubleshooting.md
+docs/wellknown.md
