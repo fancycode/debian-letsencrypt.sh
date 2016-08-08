@@ -1,3 +1,9 @@
+letsencrypt.sh (0.2.0-2) unstable; urgency=low
+
+  * Added patch to use new version of Let's Encrypt Subscriber Agreement
+
+ -- Joachim Bauch <bauch@struktur.de>  Mon, 08 Aug 2016 12:01:26 +0200
+
 letsencrypt.sh (0.2.0-1) unstable; urgency=low
 
   * Added watch file to check for new versions.
