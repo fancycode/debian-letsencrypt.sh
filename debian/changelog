@@ -1,3 +1,9 @@
+letsencrypt.sh (0.2.0-3) unstable; urgency=medium
+
+  * Add patch to use temporary file for DER -> PEM conversion.
+
+ -- Joachim Bauch <bauch@struktur.de>  Thu, 03 Aug 2017 12:20:07 +0200
+
 letsencrypt.sh (0.2.0-2) unstable; urgency=low
 
   * Added patch to use new version of Let's Encrypt Subscriber Agreement
