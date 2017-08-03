@@ -1,0 +1,28 @@
+From 7eca8aec5a6679ce5ca507386687d130cc38ce23 Mon Sep 17 00:00:00 2001
+From: Lukas Schauer <lukas@schauer.so>
+Date: Sat, 17 Sep 2016 13:02:48 +0200
+Subject: [PATCH] use temporary file for DER->PEM conversion (fixes #279)
+
+---
+ dehydrated | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
+
+--- a/letsencrypt.sh
++++ b/letsencrypt.sh
+@@ -547,9 +547,13 @@
+   # Create fullchain.pem
+   echo " + Creating fullchain.pem..."
+   cat "${crt_path}" > "${BASEDIR}/certs/${domain}/fullchain-${timestamp}.pem"
+-  http_request get "$(${OPENSSL} x509 -in "${BASEDIR}/certs/${domain}/cert-${timestamp}.pem" -noout -text | grep 'CA Issuers - URI:' | cut -d':' -f2-)" > "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem"
+-  if ! grep -q "BEGIN CERTIFICATE" "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem"; then
+-    ${OPENSSL} x509 -in "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem" -inform DER -out "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem" -outform PEM
++  tmpchain="$(_mktemp)"
++  http_request get "$(${OPENSSL} x509 -in "${BASEDIR}/certs/${domain}/cert-${timestamp}.pem" -noout -text | grep 'CA Issuers - URI:' | cut -d':' -f2-)" > "${tmpchain}"
++  if grep -q "BEGIN CERTIFICATE" "${tmpchain}"; then
++    mv "${tmpchain}" "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem"
++  else
++    ${OPENSSL} x509 -in "${tmpchain}" -inform DER -out "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem" -outform PEM
++    rm "${tmpchain}"
+   fi
+   cat "${BASEDIR}/certs/${domain}/chain-${timestamp}.pem" >> "${BASEDIR}/certs/${domain}/fullchain-${timestamp}.pem"
+ 

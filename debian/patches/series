@@ -1,2 +1,3 @@
 libressl_support.patch
 update_license_agreement.patch
+der_pem_conversion_tempfile.patch
